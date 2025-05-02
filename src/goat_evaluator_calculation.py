@@ -127,6 +127,7 @@ def get_goat_score(raw, max_raw):
     return (raw/max_raw) * 100.0
 
 def calculate_goat_evualation(raw_df):
+    raw_df.fillna(0, inplace=True)
     raw_df['era_diff'] = [get_era_diff(a,era) for a in raw_df['Era']]
     raw_df['acc_score'] = [get_acc_score(a, max(raw_df['Accolades'])) for a in raw_df['Accolades']]
     raw_df['prime_rise'] = [get_prime_rise(a,b) for (a,b) in zip(raw_df['Prime_Rs'], raw_df['Prime_Ps'])]
@@ -173,7 +174,7 @@ def get_sort_df(df):
     sort_df = df.sort_values(by='goat_score', ascending=False)
     sort_df['Rank'] = np.arange(len(sort_df)) + 1
     sort_df['Goat Score'] = round(sort_df['goat_score'],3)
-    final_df = sort_df[['Player', 'Goat Score', 'Rank']].reset_index()
+    final_df = sort_df[['Player', 'Goat Score', 'Rank']]
     return final_df    
 
 
