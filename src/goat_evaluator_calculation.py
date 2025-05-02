@@ -126,7 +126,7 @@ def get_raw_score_with_era(acc_score, acc_input, pr_o, pri, pe_o, pea, lead, lea
 def get_goat_score(raw, max_raw):
     return (raw/max_raw) * 100.0
 
-def calculate_goat_evualation(raw_df):
+def calculate_goat_evualation(raw_df, era, box_score, adv, rs, ps, accolades, prime, peak, prime_perc, peak_perc, leaderboard, two_way, playoff_rise, rs_winning, ps_winning, versatility, cultural, artistry):
     raw_df.fillna(0, inplace=True)
     raw_df['era_diff'] = [get_era_diff(a,era) for a in raw_df['Era']]
     raw_df['acc_score'] = [get_acc_score(a, max(raw_df['Accolades'])) for a in raw_df['Accolades']]
@@ -197,5 +197,5 @@ if __name__ == '__main__':
     cultural = 0
     artistry = 0
     df = pd.read_csv("../raw_data/Goat Evaluator Raw Data.csv")
-    calculated_df = calculate_goat_evualation(df)
+    calculated_df = calculate_goat_evualation(df, era, box_score, adv, rs, ps, accolades, prime, peak, prime_perc, peak_perc, leaderboard, two_way, playoff_rise, rs_winning, ps_winning, versatility, cultural, artistry)
     final_output_df = get_sort_df(calculated_df)
