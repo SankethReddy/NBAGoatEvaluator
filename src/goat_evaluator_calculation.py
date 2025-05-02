@@ -177,7 +177,6 @@ def get_sort_df(df):
     final_df = sort_df[['Player', 'Goat Score', 'Rank']]
     return final_df 
 
-
 if __name__ == '__main__':
     era = 1.0
     box_score = 30/100
