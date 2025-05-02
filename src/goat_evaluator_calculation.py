@@ -175,7 +175,7 @@ def get_sort_df(df):
     sort_df['Rank'] = np.arange(len(sort_df)) + 1
     sort_df['Goat Score'] = round(sort_df['goat_score'],3)
     final_df = sort_df[['Player', 'Goat Score', 'Rank']]
-    return final_df    
+    return final_df 
 
 
 if __name__ == '__main__':
