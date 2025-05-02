@@ -117,6 +117,15 @@ def get_ovr_versatility(rsv, rs_perc, psv, ps_perc, dnr):
 def get_versatility_score(vers, max_vers):
     return (vers/max_vers) * 100.0
 
+def get_raw_score(acc_score, acc_input, pr_o, pri, pe_o, pea, lead, lead_input, two_way, two_input, rs_w, rs_w_input, ps_w, ps_w_input, play_rise, play_rise_input, vers, vers_input, cul, cul_input, art, art_input):
+    return ((acc_score * acc_input) + (pr_o * pri) + (pe_o * pea) + (lead * lead_input) + (two_way * two_input) + (rs_w * rs_w_input) + (ps_w * ps_w_input) + (play_rise * play_rise_input) + (vers * vers_input) + (cul * cul_input) + (art * art_input))/100
+
+def get_raw_score_with_era(acc_score, acc_input, pr_o, pri, pe_o, pea, lead, lead_input, two_way, two_input, rs_w, rs_w_input, ps_w, ps_w_input, play_rise, play_rise_input, vers, vers_input, cul, cul_input, art, art_input, era_diff_log):
+    return (((acc_score * acc_input) + (pr_o * pri) + (pe_o * pea) + (lead * lead_input) + (two_way * two_input) + (rs_w * rs_w_input) + (ps_w * ps_w_input) + (play_rise * play_rise_input) + (vers * vers_input) + (cul * cul_input) + (art * art_input))/100) - era_diff_log
+
+def get_goat_score(raw, max_raw):
+    return (raw/max_raw) * 100.0
+
 def calculate_goat_evualation(raw_df):
     raw_df['era_diff'] = [get_era_diff(a,era) for a in raw_df['Era']]
     raw_df['acc_score'] = [get_acc_score(a, max(raw_df['Accolades'])) for a in raw_df['Accolades']]
@@ -151,7 +160,21 @@ def calculate_goat_evualation(raw_df):
     raw_df['ps_winning_score'] = [get_ps_winning_score(a,max(raw_df['Ps_Winning'])) for a in raw_df['Ps_Winning']]
     raw_df['ovr_versatility'] = [get_ovr_versatility(a,rs,b,ps,c) for (a,b,c) in zip(raw_df['Rsv'],raw_df['Psv'],raw_df['Dnr'])]
     raw_df['versatility_score'] = [get_versatility_score(a,max(raw_df['ovr_versatility'])) for a in raw_df['ovr_versatility']]
-    return raw_df    
+    raw_df['raw_score'] = [get_raw_score(a,accolades,b,prime,c,peak,d,leaderboard,e,two_way,f,rs_winning,g,ps_winning,h,playoff_rise,i,versatility,j,cultural,k,artistry) 
+                           for (a,b,c,d,e,f,g,h,i,j,k) in zip(raw_df['acc_score'],raw_df['prime_overall'],raw_df['peak_overall'],raw_df['leaderboard_score'],raw_df['2_way_score'],raw_df['rs_winning_score'],raw_df['ps_winning_score'],raw_df['playoff_rise_score'],raw_df['versatility_score'],raw_df['Culture'],raw_df['Artistry'])]
+    raw_df['era_diff_perc_score'] = [get_era_diff_perc_score(a,era,b) for (a,b) in zip(raw_df['era_diff'],raw_df['raw_score'])]
+    raw_df['era_diff_log'] = [get_era_diff_log(a) for a in raw_df['era_diff_perc_score']]
+    raw_df['raw_score_with_era'] = [get_raw_score_with_era(a,accolades,b,prime,c,peak,d,leaderboard,e,two_way,f,rs_winning,g,ps_winning,h,playoff_rise,i,versatility,j,cultural,k,artistry,l) 
+                           for (a,b,c,d,e,f,g,h,i,j,k,l) in zip(raw_df['acc_score'],raw_df['prime_overall'],raw_df['peak_overall'],raw_df['leaderboard_score'],raw_df['2_way_score'],raw_df['rs_winning_score'],raw_df['ps_winning_score'],raw_df['playoff_rise_score'],raw_df['versatility_score'],raw_df['Culture'],raw_df['Artistry'],raw_df['era_diff_log'])]
+    raw_df['goat_score'] = [get_goat_score(a,max(raw_df['raw_score_with_era'])) for a in raw_df['raw_score_with_era']]
+    return raw_df
+
+def get_sort_df(df):
+    sort_df = df.sort_values(by='goat_score', ascending=False)
+    sort_df['Rank'] = np.arange(len(sort_df)) + 1
+    sort_df['Goat Score'] = round(sort_df['goat_score'],3)
+    final_df = sort_df[['Player', 'Goat Score', 'Rank']].reset_index()
+    return final_df    
 
 
 if __name__ == '__main__':
@@ -175,3 +198,4 @@ if __name__ == '__main__':
     artistry = 0
     df = pd.read_csv("../raw_data/Goat Evaluator Raw Data.csv")
     calculated_df = calculate_goat_evualation(df)
+    final_output_df = get_sort_df(calculated_df)
