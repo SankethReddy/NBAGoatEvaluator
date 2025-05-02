@@ -151,7 +151,7 @@ def calculate_goat_evualation(raw_df):
     raw_df['ps_winning_score'] = [get_ps_winning_score(a,max(raw_df['Ps_Winning'])) for a in raw_df['Ps_Winning']]
     raw_df['ovr_versatility'] = [get_ovr_versatility(a,rs,b,ps,c) for (a,b,c) in zip(raw_df['Rsv'],raw_df['Psv'],raw_df['Dnr'])]
     raw_df['versatility_score'] = [get_versatility_score(a,max(raw_df['ovr_versatility'])) for a in raw_df['ovr_versatility']]
-    
+    return raw_df    
 
 
 if __name__ == '__main__':
