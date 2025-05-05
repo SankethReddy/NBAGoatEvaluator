@@ -126,6 +126,13 @@ def get_raw_score_with_era(acc_score, acc_input, pr_o, pri, pe_o, pea, lead, lea
 def get_goat_score(raw, max_raw):
     return (raw/max_raw) * 100.0
 
+def get_sort_df(df):
+    sort_df = df.sort_values(by='goat_score', ascending=False)
+    sort_df['Rank'] = np.arange(len(sort_df)) + 1
+    sort_df['Goat Score'] = round(sort_df['goat_score'],3)
+    final_df = sort_df[['Player', 'Goat Score', 'Rank']]
+    return final_df 
+
 def calculate_goat_evualation(raw_df, era, box_score, adv, rs, ps, accolades, prime, peak, prime_perc, peak_perc, leaderboard, two_way, playoff_rise, rs_winning, ps_winning, versatility, cultural, artistry):
     raw_df.fillna(0, inplace=True)
     raw_df['era_diff'] = [get_era_diff(a,era) for a in raw_df['Era']]
@@ -168,17 +175,11 @@ def calculate_goat_evualation(raw_df, era, box_score, adv, rs, ps, accolades, pr
     raw_df['raw_score_with_era'] = [get_raw_score_with_era(a,accolades,b,prime,c,peak,d,leaderboard,e,two_way,f,rs_winning,g,ps_winning,h,playoff_rise,i,versatility,j,cultural,k,artistry,l) 
                            for (a,b,c,d,e,f,g,h,i,j,k,l) in zip(raw_df['acc_score'],raw_df['prime_overall'],raw_df['peak_overall'],raw_df['leaderboard_score'],raw_df['2_way_score'],raw_df['rs_winning_score'],raw_df['ps_winning_score'],raw_df['playoff_rise_score'],raw_df['versatility_score'],raw_df['Culture'],raw_df['Artistry'],raw_df['era_diff_log'])]
     raw_df['goat_score'] = [get_goat_score(a,max(raw_df['raw_score_with_era'])) for a in raw_df['raw_score_with_era']]
-    return raw_df
-
-def get_sort_df(df):
-    sort_df = df.sort_values(by='goat_score', ascending=False)
-    sort_df['Rank'] = np.arange(len(sort_df)) + 1
-    sort_df['Goat Score'] = round(sort_df['goat_score'],3)
-    final_df = sort_df[['Player', 'Goat Score', 'Rank']]
-    return final_df 
+    final_df = get_sort_df(raw_df)
+    return final_df
 
 if __name__ == '__main__':
-    era = 1.0
+    era = 2.0
     box_score = 30/100
     adv = 70/100
     rs = 35/100
@@ -197,5 +198,4 @@ if __name__ == '__main__':
     cultural = 0
     artistry = 0
     df = pd.read_csv("../raw_data/Goat Evaluator Raw Data.csv")
-    calculated_df = calculate_goat_evualation(df, era, box_score, adv, rs, ps, accolades, prime, peak, prime_perc, peak_perc, leaderboard, two_way, playoff_rise, rs_winning, ps_winning, versatility, cultural, artistry)
-    final_output_df = get_sort_df(calculated_df)
+    final_output_df = calculate_goat_evualation(df, era, box_score, adv, rs, ps, accolades, prime, peak, prime_perc, peak_perc, leaderboard, two_way, playoff_rise, rs_winning, ps_winning, versatility, cultural, artistry)
