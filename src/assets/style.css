@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.era-slider-class {
+  width: 75%;
+}
+
+.regular-season-postseason-slider-class {
+  width: 75%;
+}
+
+.box-season-advanced-statistics-slider-class {
+  width: 75%;
+}
