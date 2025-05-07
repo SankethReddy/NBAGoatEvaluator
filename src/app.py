@@ -5,7 +5,7 @@ from flask import Flask
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import pandas as pd
 import numpy as np
 from goat_evaluator_calculation import calculate_goat_evualation
@@ -79,9 +79,231 @@ app.layout = html.Div([
     html.Div(id='box-score-advanced-analaytics-slider-output-container', style = {'text-align': 'center', 'font-weight': 'bold'}),
     html.Div([
         html.H2("3. Build Your Model", style = {'font-weight': '600', 'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
-        html.P("Distribute 100 points across the following criteria:", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'})
-        ])
+        html.P("Distribute exactly 100 points across the following criteria:", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'})
+        ]),
+    html.Div(id='total-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+    html.Div([
+        html.Div(id='accolades-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Personal awards (MVPs, FMVPs, All-NBA, Scoring Titles, etc.)", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='accolades-slider', className='accolades-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                                0: {'label': '0'},
+                                                                                                                                10: {'label': '10'},
+                                                                                                                                20: {'label': '20'},
+                                                                                                                                30: {'label': '30'},
+                                                                                                                                40: {'label': '40'},
+                                                                                                                                50: {'label': '50'},
+                                                                                                                                60: {'label': '60'},
+                                                                                                                                70: {'label': '70'},
+                                                                                                                                80: {'label': '80'},
+                                                                                                                                90: {'label': '90'},
+                                                                                                                                100: {'label': '100'}
+                                                                                                                                },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='prime-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Player performance in all the years he was at an elite level (example: Kobe Bryant 2001-2013)", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='prime-slider', className='prime-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                        0: {'label': '0'},
+                                                                                                                        10: {'label': '10'},
+                                                                                                                        20: {'label': '20'},
+                                                                                                                        30: {'label': '30'},
+                                                                                                                        40: {'label': '40'},
+                                                                                                                        50: {'label': '50'},
+                                                                                                                        60: {'label': '60'},
+                                                                                                                        70: {'label': '70'},
+                                                                                                                        80: {'label': '80'},
+                                                                                                                        90: {'label': '90'},
+                                                                                                                        100: {'label': '100'},
+                                                                                                                        },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='peak-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Player performance in the 2-3 consecutive seasons where he was at his best (example: Kobe Bryant 2007-2009)", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='peak-slider', className='peak-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                      0: {'label': '0'},
+                                                                                                                      10: {'label': '10'},
+                                                                                                                      20: {'label': '20'},
+                                                                                                                      30: {'label': '30'},
+                                                                                                                      40: {'label': '40'},
+                                                                                                                      50: {'label': '50'},
+                                                                                                                      60: {'label': '60'},
+                                                                                                                      70: {'label': '70'},
+                                                                                                                      80: {'label': '80'},
+                                                                                                                      90: {'label': '90'},
+                                                                                                                      100: {'label': '100'},
+                                                                                                                      },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='leaderboards-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Placement in career box score stat totals like points, rebounds, and assists", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='leaderboards-slider', className='leaderboards-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                                      0: {'label': '0'},
+                                                                                                                                      10: {'label': '10'},
+                                                                                                                                      20: {'label': '20'},
+                                                                                                                                      30: {'label': '30'},
+                                                                                                                                      40: {'label': '40'},
+                                                                                                                                      50: {'label': '50'},
+                                                                                                                                      60: {'label': '60'},
+                                                                                                                                      70: {'label': '70'},
+                                                                                                                                      80: {'label': '80'},
+                                                                                                                                      90: {'label': '90'},
+                                                                                                                                      100: {'label': '100'},
+                                                                                                                                      },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='two-way-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Balance of elite-level offense and elite-level defenses", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='two-way-slider', className='two-way-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                            0: {'label': '0'},
+                                                                                                                            10: {'label': '10'},
+                                                                                                                            20: {'label': '20'},
+                                                                                                                            30: {'label': '30'},
+                                                                                                                            40: {'label': '40'},
+                                                                                                                            50: {'label': '50'},
+                                                                                                                            60: {'label': '60'},
+                                                                                                                            70: {'label': '70'},
+                                                                                                                            80: {'label': '80'},
+                                                                                                                            90: {'label': '90'},
+                                                                                                                            100: {'label': '100'},
+                                                                                                                            },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='playoff-rise-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("The ability to increase performance from the regular season into the postseason", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='playoff-rise-slider', className='playoff-rise-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                                      0: {'label': '0'},
+                                                                                                                                      10: {'label': '10'},
+                                                                                                                                      20: {'label': '20'},
+                                                                                                                                      30: {'label': '30'},
+                                                                                                                                      40: {'label': '40'},
+                                                                                                                                      50: {'label': '50'},
+                                                                                                                                      60: {'label': '60'},
+                                                                                                                                      70: {'label': '70'},
+                                                                                                                                      80: {'label': '80'},
+                                                                                                                                      90: {'label': '90'},
+                                                                                                                                      100: {'label': '100'},
+                                                                                                                                      },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='regular-season-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Team success during the regular season through the player’s prime years", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='regular-season-slider', className='regular-season-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                                          0: {'label': '0'},
+                                                                                                                                          10: {'label': '10'},
+                                                                                                                                          20: {'label': '20'},
+                                                                                                                                          30: {'label': '30'},
+                                                                                                                                          40: {'label': '40'},
+                                                                                                                                          50: {'label': '50'},
+                                                                                                                                          60: {'label': '60'},
+                                                                                                                                          70: {'label': '70'},
+                                                                                                                                          80: {'label': '80'},
+                                                                                                                                          90: {'label': '90'},
+                                                                                                                                          100: {'label': '100'},
+                                                                                                                                          },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='postseason-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Team success in the postseason through the player’s career", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='postseason-slider', className='postseason-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                                  0: {'label': '0'},
+                                                                                                                                  10: {'label': '10'},
+                                                                                                                                  20: {'label': '20'},
+                                                                                                                                  30: {'label': '30'},
+                                                                                                                                  40: {'label': '40'},
+                                                                                                                                  50: {'label': '50'},
+                                                                                                                                  60: {'label': '60'},
+                                                                                                                                  70: {'label': '70'},
+                                                                                                                                  80: {'label': '80'},
+                                                                                                                                  90: {'label': '90'},
+                                                                                                                                  100: {'label': '100'},
+                                                                                                                                  },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='versatility-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Ability to score in multiple ways, rebound, pass, and defend in multiple ways", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='versatility-slider', className='versatility-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                                    0: {'label': '0'},
+                                                                                                                                    10: {'label': '10'},
+                                                                                                                                    20: {'label': '20'},
+                                                                                                                                    30: {'label': '30'},
+                                                                                                                                    40: {'label': '40'},
+                                                                                                                                    50: {'label': '50'},
+                                                                                                                                    60: {'label': '60'},
+                                                                                                                                    70: {'label': '70'},
+                                                                                                                                    80: {'label': '80'},
+                                                                                                                                    90: {'label': '90'},
+                                                                                                                                    100: {'label': '100'},
+                                                                                                                                    },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='cultural-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Influence on the sport or public", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='cultural-slider', className='cultural-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                              0: {'label': '0'},
+                                                                                                                              10: {'label': '10'},
+                                                                                                                              20: {'label': '20'},
+                                                                                                                              30: {'label': '30'},
+                                                                                                                              40: {'label': '40'},
+                                                                                                                              50: {'label': '50'},
+                                                                                                                              60: {'label': '60'},
+                                                                                                                              70: {'label': '70'},
+                                                                                                                              80: {'label': '80'},
+                                                                                                                              90: {'label': '90'},
+                                                                                                                              100: {'label': '100'},
+                                                                                                                              },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Div(id='artistry-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+        html.P("Play style that is exceptionally creative or aesthetically pleasing", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%', 'font-size': '15px'})
+        ]),
+    html.Div([
+        dcc.Slider(id='artistry-slider', className='artistry-slider-class', min = 0, max = 100, step = 1, value = 0, marks = {
+                                                                                                                              0: {'label': '0'},
+                                                                                                                              10: {'label': '10'},
+                                                                                                                              20: {'label': '20'},
+                                                                                                                              30: {'label': '30'},
+                                                                                                                              40: {'label': '40'},
+                                                                                                                              50: {'label': '50'},
+                                                                                                                              60: {'label': '60'},
+                                                                                                                              70: {'label': '70'},
+                                                                                                                              80: {'label': '80'},
+                                                                                                                              90: {'label': '90'},
+                                                                                                                              100: {'label': '100'},
+                                                                                                                              },
+                   tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})
     ])
+
 
 @app.callback(
     Output('era-slider-output-container', 'children'),
@@ -106,6 +328,114 @@ def update_box_score_advanced_statistics_output(advanced_statistics_percentage):
     box_score = 100 - advanced_statistics_percentage
     return f"Traditional Box Score: {box_score}% / Advanced Statistics: {advanced_statistics_percentage}%"
 
+@app.callback(
+    Output('accolades-slider-output-container', 'children'),
+    [Input('accolades-slider', 'value')]
+    )
+def update_accolades_output(accolades_value):
+    return html.H4(f"Accolades: {accolades_value}")
+
+@app.callback(
+    Output('prime-slider-output-container', 'children'),
+    [Input('prime-slider', 'value')]
+    )
+def update_prime_output(prime_value):
+    return html.H4(f"Prime: {prime_value}")
+
+@app.callback(
+    Output('peak-slider-output-container', 'children'),
+    [Input('peak-slider', 'value')]
+    )
+def update_peak_output(peak_value):
+    return html.H4(f"Peak: {peak_value}")
+
+@app.callback(
+    Output('leaderboards-slider-output-container', 'children'),
+    [Input('leaderboards-slider', 'value')]
+    )
+def update_leaderboards_output(leaderboards_value):
+    return html.H4(f"Leaderboards: {leaderboards_value}")
+
+@app.callback(
+    Output('two-way-slider-output-container', 'children'),
+    [Input('two-way-slider', 'value')]
+    )
+def update_two_way_output(two_way_value):
+    return html.H4(f"Two-Way: {two_way_value}")
+
+@app.callback(
+    Output('playoff-rise-slider-output-container', 'children'),
+    [Input('playoff-rise-slider', 'value')]
+    )
+def update_playoff_rise_output(playoff_rise_value):
+    return html.H4(f"Playoff Rise: {playoff_rise_value}")
+
+@app.callback(
+    Output('regular-season-slider-output-container', 'children'),
+    [Input('regular-season-slider', 'value')]
+    )
+def update_regular_season_output(regular_season_value):
+    return html.H4(f"Regular Season Winning: {regular_season_value}")
+
+@app.callback(
+    Output('postseason-slider-output-container', 'children'),
+    [Input('postseason-slider', 'value')]
+    )
+def update_postseason_output(postseason_value):
+    return html.H4(f"Postseason Winning: {postseason_value}")
+
+@app.callback(
+    Output('versatility-slider-output-container', 'children'),
+    [Input('versatility-slider', 'value')]
+    )
+def update_versatility_output(versatility_value):
+    return html.H4(f"Versatility: {versatility_value}")
+
+@app.callback(
+    Output('cultural-slider-output-container', 'children'),
+    [Input('cultural-slider', 'value')]
+    )
+def update_cultural_output(cultural_value):
+    return html.H4(f"Cultural Impact: {cultural_value}")
+
+@app.callback(
+    Output('artistry-slider-output-container', 'children'),
+    [Input('artistry-slider', 'value')]
+    )
+def update_artistry_output(artistry_value):
+    return html.H4(f"Artistry: {artistry_value}")
+
+@app.callback(
+    Output('total-slider-output-container', 'children'),
+    [Input('accolades-slider', 'value'),
+     Input('prime-slider', 'value'),
+     Input('peak-slider', 'value'),
+     Input('leaderboards-slider', 'value'),
+     Input('two-way-slider', 'value'),
+     Input('playoff-rise-slider', 'value'),
+     Input('regular-season-slider', 'value'),
+     Input('postseason-slider', 'value'),
+     Input('versatility-slider', 'value'),
+     Input('cultural-slider', 'value'),
+     Input('artistry-slider', 'value')]
+    )
+def update_total_distributed_output(accolades,prime,peak,leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry):
+    total_points_distributed = accolades + prime + peak + leaderboards + two_way + playoff_rise + regular_season + postseason + versatility + cultural + artistry
+    if total_points_distributed < 100:
+        return html.Div([
+                    html.H4(f"Total Points Distributed: {total_points_distributed}"),
+                    html.H5(f"Distribute {100- total_points_distributed} more points across the criteria", style={'color': 'red'})
+                        ])
+    elif total_points_distributed == 100:
+        return html.Div([
+                    html.H4(f"Total Points Distributed: {total_points_distributed}"),
+                    html.H5("Click the SUBMIT button below to generate results", style={'color': 'green'})
+                        ])
+    else:
+        return html.Div([
+                    html.H4(f"Total Points Distributed: {total_points_distributed}"),
+                    html.H5("Exceeded the total. Can distribute only 100 points across the criteria so re-distribute", style={'color': 'red'})
+                        ])
 
 
 if __name__ == '__main__':
