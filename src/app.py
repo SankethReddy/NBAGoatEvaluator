@@ -38,6 +38,7 @@ app.layout = html.Div([
                                                                                                                 },
                     tooltip={'always_visible': True, 'placement': 'top', 'style': {'fontsize': '100px', 'font-weight': 'bold'}})
         ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div(id='era-slider-output-container', style = {'text-align': 'center', 'font-weight': 'bold'}),
     html.Div([
         html.H2("2. Evaluate Performance", style = {'font-weight': '600', 'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
         html.P("This is purely a measure of a player’s production and ability to increase the chances of winning. A win or an MVP does not influence the evaluation of a player’s performance. We don’t have the luxury of the “eye test” in this statistical assessment, so choose which numbers you want to consider.", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'})
@@ -45,6 +46,15 @@ app.layout = html.Div([
     html.Div([
         dcc.Slider(id='regular-season-postseason-slider', className='regular-season-postseason-slider-class', min = 0, max = 100, step = 1, value = 50, marks = {
                                                                                                                                                                  0: {'label': "Regular Season"},
+                                                                                                                                                                 10: {'label': '10'},
+                                                                                                                                                                 20: {'label': '20'},
+                                                                                                                                                                 30: {'label': '30'},
+                                                                                                                                                                 40: {'label': '40'},
+                                                                                                                                                                 50: {'label': '50'},
+                                                                                                                                                                 60: {'label': '60'},
+                                                                                                                                                                 70: {'label': '70'},
+                                                                                                                                                                 80: {'label': '80'},
+                                                                                                                                                                 90: {'label': '90'},
                                                                                                                                                                  100: {'label': "Postseason"}
                                                                                                                                                                  },
                    tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
@@ -53,6 +63,15 @@ app.layout = html.Div([
     html.Div([
         dcc.Slider(id='box-score-advanced-analaytics-slider', className='box-season-advanced-statistics-slider-class', min = 0, max = 100, step = 1, value = 50, marks = {
                                                                                                                                                                          0: {'label': 'Traditional Box Score'},
+                                                                                                                                                                         10: {'label': '10'},
+                                                                                                                                                                         20: {'label': '20'},
+                                                                                                                                                                         30: {'label': '30'},
+                                                                                                                                                                         40: {'label': '40'},
+                                                                                                                                                                         50: {'label': '50'},
+                                                                                                                                                                         60: {'label': '60'},
+                                                                                                                                                                         70: {'label': '70'},
+                                                                                                                                                                         80: {'label': '80'},
+                                                                                                                                                                         90: {'label': '90'},
                                                                                                                                                                          100: {'label': 'Advanced Statistics'}
                                                                                                                                                                          },
                    tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
@@ -64,6 +83,12 @@ app.layout = html.Div([
         ])
     ])
 
+@app.callback(
+    Output('era-slider-output-container', 'children'),
+    [Input('era-slider', 'value')]
+    )
+def update_era_output(era):
+    return f"Era: {era}"
 
 @app.callback(
     Output('regular-season-postseason-slider-output-container', 'children'),
