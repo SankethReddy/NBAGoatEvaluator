@@ -5,6 +5,7 @@ from flask import Flask
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_table
 from dash.dependencies import Input, Output, State
 import pandas as pd
 import numpy as np
@@ -301,7 +302,13 @@ app.layout = html.Div([
                                                                                                                               100: {'label': '100'},
                                                                                                                               },
                    tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
-        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([
+        html.Button('SUBMIT', id='submit-button', n_clicks=0, style = {'display': 'none'})
+        ], style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
+    html.Div([
+        dash_table.DataTable(id='output-table', style_table={'display': 'none'})
+        ])
     ])
 
 
@@ -406,7 +413,8 @@ def update_artistry_output(artistry_value):
     return html.H4(f"Artistry: {artistry_value}")
 
 @app.callback(
-    Output('total-slider-output-container', 'children'),
+    [Output('total-slider-output-container', 'children'),
+     Output('submit-button', 'style')],
     [Input('accolades-slider', 'value'),
      Input('prime-slider', 'value'),
      Input('peak-slider', 'value'),
@@ -422,20 +430,30 @@ def update_artistry_output(artistry_value):
 def update_total_distributed_output(accolades,prime,peak,leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry):
     total_points_distributed = accolades + prime + peak + leaderboards + two_way + playoff_rise + regular_season + postseason + versatility + cultural + artistry
     if total_points_distributed < 100:
-        return html.Div([
-                    html.H4(f"Total Points Distributed: {total_points_distributed}"),
-                    html.H5(f"Distribute {100- total_points_distributed} more points across the criteria", style={'color': 'red'})
-                        ])
+        if total_points_distributed == 99:
+            return [html.Div([
+                        html.H4(f"Total Points Distributed: {total_points_distributed}"),
+                        html.H5(f"Distribute {100- total_points_distributed} more point across the criteria", style={'color': 'red'})
+                            ]),
+                    {'display': 'none'}]
+        else:
+            return [html.Div([
+                        html.H4(f"Total Points Distributed: {total_points_distributed}"),
+                        html.H5(f"Distribute {100- total_points_distributed} more points across the criteria", style={'color': 'red'})
+                            ]),
+                    {'display': 'none'}]
     elif total_points_distributed == 100:
-        return html.Div([
+        return [html.Div([
                     html.H4(f"Total Points Distributed: {total_points_distributed}"),
                     html.H5("Click the SUBMIT button below to generate results", style={'color': 'green'})
-                        ])
+                        ]),
+                {'display': 'block', 'backgroundColor': '#008000', 'color': 'white', 'padding': '10px', 'border': 'none', 'cursor': 'pointer'}]
     else:
-        return html.Div([
+        return [html.Div([
                     html.H4(f"Total Points Distributed: {total_points_distributed}"),
-                    html.H5("Exceeded the total. Can distribute only 100 points across the criteria so re-distribute", style={'color': 'red'})
-                        ])
+                    html.H5("Exceeded the total. Exactly 100 points need to be distributed across the criteria so please re-distribute", style={'color': 'red'})
+                        ]),
+                {'display': 'none'}]
 
 
 if __name__ == '__main__':
