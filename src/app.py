@@ -6,15 +6,14 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
 import pandas as pd
 import numpy as np
 from goat_evaluator_calculation import calculate_goat_evualation
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server, url_base_pathname='/NBAGoatEvaluator/')
-
-df = pd.read_csv("../raw_data/Goat Evaluator Raw Data.csv")
 
 app.layout = html.Div([
     html.Div([
@@ -306,9 +305,10 @@ app.layout = html.Div([
     html.Div([
         html.Button('SUBMIT', id='submit-button', n_clicks=0, style = {'display': 'none'})
         ], style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
-    html.Div([
-        dash_table.DataTable(id='output-table', style_table={'display': 'none'})
-        ])
+    html.Div(id='output-content',
+             children=
+             [dash_table.DataTable(id='output-table', style_table={'display': 'none'})]
+             )
     ])
 
 
@@ -455,6 +455,38 @@ def update_total_distributed_output(accolades,prime,peak,leaderboards,two_way,pl
                         ]),
                 {'display': 'none'}]
 
+
+@app.callback(
+    Output('output-content', 'children'),
+    [Input('submit-button', 'n_clicks'),
+     Input('era-slider', 'value'),
+     Input('box-score-advanced-analaytics-slider', 'value'),
+     Input('regular-season-postseason-slider', 'value'),
+     Input('accolades-slider', 'value'),
+     Input('prime-slider', 'value'),
+     Input('peak-slider', 'value'),
+     Input('leaderboards-slider', 'value'),
+     Input('two-way-slider', 'value'),
+     Input('playoff-rise-slider', 'value'),
+     Input('regular-season-slider', 'value'),
+     Input('postseason-slider', 'value'),
+     Input('versatility-slider', 'value'),
+     Input('cultural-slider', 'value'),
+     Input('artistry-slider', 'value')]
+    )
+def update_table_output(n_clicks,era,box_score_advanced_analytics,regular_season_postseason,accolades,prime,peak,leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry):
+    df = pd.read_csv("../raw_data/Goat Evaluator Raw Data.csv")
+    changed_id_list = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'submit-button' in changed_id_list:
+        output_df = calculate_goat_evualation(df,era,(100-box_score_advanced_analytics)/100,box_score_advanced_analytics/100,(100-regular_season_postseason)/100,regular_season_postseason/100,accolades,prime,peak,
+                                               (prime)/(prime+peak),(peak)/(prime+peak),leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry)
+        return dash_table.DataTable(id='output-table',
+                                    data = output_df.to_dict('records'),
+                                    columns = [{'name': col, 'id': col} for col in output_df.columns],
+                                    style_table = {'display': 'block'}
+                                    )
+    else:
+        raise PreventUpdate
 
 if __name__ == '__main__':
     app.run_server()
