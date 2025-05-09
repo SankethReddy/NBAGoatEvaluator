@@ -177,25 +177,3 @@ def calculate_goat_evualation(raw_df, era, box_score, adv, rs, ps, accolades, pr
     raw_df['goat_score'] = [get_goat_score(a,max(raw_df['raw_score_with_era'])) for a in raw_df['raw_score_with_era']]
     final_df = get_sort_df(raw_df)
     return final_df
-
-if __name__ == '__main__':
-    era = 2.0
-    box_score = 30/100
-    adv = 70/100
-    rs = 35/100
-    ps = 65/100
-    accolades = 45
-    prime = 5
-    peak = 5
-    prime_perc = (prime)/(prime+peak)
-    peak_perc = (peak)/(prime+peak)
-    leaderboard = 5
-    two_way = 0
-    playoff_rise = 5
-    rs_winning = 10
-    ps_winning = 20
-    versatility = 5
-    cultural = 0
-    artistry = 0
-    df = pd.read_csv("../raw_data/Goat Evaluator Raw Data.csv")
-    final_output_df = calculate_goat_evualation(df, era, box_score, adv, rs, ps, accolades, prime, peak, prime_perc, peak_perc, leaderboard, two_way, playoff_rise, rs_winning, ps_winning, versatility, cultural, artistry)
