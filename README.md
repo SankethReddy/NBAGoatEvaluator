@@ -1,1 +1,1 @@
-Web Application that calculates the greatest NBA players of all time based on different inputs from the user
+Web Application that calculates the ranking of the greatest NBA players of all time based on different inputs from the user
