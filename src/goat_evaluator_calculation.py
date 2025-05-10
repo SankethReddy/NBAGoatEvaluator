@@ -129,7 +129,7 @@ def get_sort_df(df):
     sort_df = df.sort_values(by='goat_score', ascending=False)
     sort_df['Rank'] = np.arange(len(sort_df)) + 1
     sort_df['Goat Score'] = round(sort_df['goat_score'],0)
-    final_df = sort_df[['Rank', 'Player', 'Goat Score']]
+    final_df = sort_df[['Rank', 'Player', 'Goat Score']].head(20)
     return final_df 
 
 def calculate_goat_evualation(raw_df, era, box_score, adv, rs, ps, accolades, prime, peak, prime_perc, peak_perc, leaderboard, two_way, playoff_rise, rs_winning, ps_winning, versatility, cultural, artistry):
