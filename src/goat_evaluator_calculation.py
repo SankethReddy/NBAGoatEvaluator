@@ -128,7 +128,7 @@ def get_goat_score(raw, max_raw):
 def get_sort_df(df):
     sort_df = df.sort_values(by='goat_score', ascending=False)
     sort_df['Rank'] = np.arange(len(sort_df)) + 1
-    sort_df['Goat Score'] = round(sort_df['goat_score'],3)
+    sort_df['Goat Score'] = round(sort_df['goat_score'],0)
     final_df = sort_df[['Rank', 'Player', 'Goat Score']]
     return final_df 
 
