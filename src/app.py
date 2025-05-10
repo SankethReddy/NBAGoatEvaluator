@@ -9,7 +9,6 @@ import dash_table
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 import pandas as pd
-import numpy as np
 from goat_evaluator_calculation import calculate_goat_evualation
 
 server = Flask(__name__)
@@ -36,7 +35,7 @@ app.layout = html.Div([
                                                                                                                 6: {'label': '6.0'},
                                                                                                                 7: {'label': "Ballers"},
                                                                                                                 },
-                    tooltip={'always_visible': True, 'placement': 'top', 'style': {'fontsize': '100px', 'font-weight': 'bold'}})
+                    tooltip={'always_visible': False, 'placement': 'top', 'style': {'fontsize': '100px', 'font-weight': 'bold'}})
         ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
     html.Div(id='era-slider-output-container', style = {'text-align': 'center', 'font-weight': 'bold'}),
     html.Div([
@@ -305,10 +304,12 @@ app.layout = html.Div([
     html.Div([
         html.Button('SUBMIT', id='submit-button', n_clicks=0, style = {'display': 'none'})
         ], style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
-    html.Div(id='output-content',
+    html.Div([
+        html.Div(id='output-content',
              children=
              [dash_table.DataTable(id='output-table', style_table={'display': 'none'})]
              )
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})
     ])
 
 
@@ -477,13 +478,26 @@ def update_total_distributed_output(accolades,prime,peak,leaderboards,two_way,pl
 def update_table_output(n_clicks,era,box_score_advanced_analytics,regular_season_postseason,accolades,prime,peak,leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry):
     df = pd.read_csv("../raw_data/Goat Evaluator Raw Data.csv")
     changed_id_list = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    total_points_distributed = accolades + prime + peak + leaderboards + two_way + playoff_rise + regular_season + postseason + versatility + cultural + artistry
+    if total_points_distributed != 100:
+        return dash_table.DataTable(id='output-table', style_table={'display': 'none'})
     if 'submit-button' in changed_id_list:
-        output_df = calculate_goat_evualation(df,era,(100-box_score_advanced_analytics)/100,box_score_advanced_analytics/100,(100-regular_season_postseason)/100,regular_season_postseason/100,accolades,prime,peak,
-                                               (prime)/(prime+peak),(peak)/(prime+peak),leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry)
+        if prime + peak > 0:
+            output_df = calculate_goat_evualation(df,era,(100-box_score_advanced_analytics)/100,box_score_advanced_analytics/100,(100-regular_season_postseason)/100,regular_season_postseason/100,accolades,prime,peak,
+                                                   (prime)/(prime+peak),(peak)/(prime+peak),leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry)
+        else:
+            output_df = calculate_goat_evualation(df,era,(100-box_score_advanced_analytics)/100,box_score_advanced_analytics/100,(100-regular_season_postseason)/100,regular_season_postseason/100,accolades,prime,peak,
+                                                   0,0,leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry)
         return dash_table.DataTable(id='output-table',
                                     data = output_df.to_dict('records'),
                                     columns = [{'name': col, 'id': col} for col in output_df.columns],
-                                    style_table = {'display': 'block'}
+                                    style_table = {'display': 'block'},
+                                    style_header={'font-weight': 'bold', 'backgroundColor': '#eee', 'color': '#900'},
+                                    style_data={'color': 'black', 'background-color': 'white'},
+                                    style_cell={'textAlign': 'left', 'whiteSpace': 'normal'},
+                                    style_cell_conditional=[{'if': {'column_id': 'Goat Score'}, 'text-align': 'right'},
+                                                            {'if': {'column_id': 'Rank'}, 'text-align': 'right'}],
+                                    style_data_conditional=[{'if': {'row_index': 'odd'}, 'backgroundColor': 'rgb(248,248,248)'}]
                                     )
     else:
         raise PreventUpdate
