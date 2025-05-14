@@ -78,7 +78,7 @@ app.layout = html.Div([
     html.Div(id='box-score-advanced-analaytics-slider-output-container', style = {'text-align': 'center', 'font-weight': 'bold'}),
     html.Div([
         html.H2("3. Build Your Model", style = {'font-weight': '600', 'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
-        html.P("Distribute EXACTLY 100 points across the following criteria. Once EXACTLY 100 points are distributed, the SUBMIT Button will appear on the bottom and click it to generate the results:", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'})
+        html.P("Distribute EXACTLY 100 points across the following criteria. Once EXACTLY 100 points are distributed, the SUBMIT Button will appear on the bottom and click it to generate your results:", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'})
         ]),
     html.Div(id='total-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
     html.Div([
