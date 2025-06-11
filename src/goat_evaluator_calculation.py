@@ -33,7 +33,7 @@ def get_prime_advanced_rise(rs, ps):
     return (ps/rs) - 1
 
 def get_prime_advanced(rs, rs_input, ps, ps_input, corp, lng):
-    return (rs * rs_input) + (ps * ps_input) + (corp * 6.5) + (lng * 1.85)
+    return (rs * rs_input) + (ps * ps_input) + (corp * 6.5) + (lng * 2)
 
 def get_prime_advanced_score(prime_advanced, max_prime_advanced):
     return (prime_advanced/max_prime_advanced) * 100.0
@@ -63,13 +63,13 @@ def get_overall_peak(peak_stats_score, box_score_input, peak_advanced_score, adv
     return (peak_stats_score * box_score_input) + (peak_advanced_score * adv_input)
 
 def get_prime_b(pr_rise):
-    return pr_rise * 2
+    return pr_rise
 
 def get_prime_a(pr_a_rise):
     return pr_a_rise
 
 def get_peak_b(pe_rise):
-    return pe_rise * 2
+    return pe_rise
 
 def get_peak_a(pe_a_rise):
     return pe_a_rise
@@ -89,20 +89,8 @@ def get_playoff_rise_score(rel_w_tot):
 def get_leaderboard_score(leaderboard, max_leaderboard):
     return (leaderboard/max_leaderboard) * 100.0
 
-def get_prime_2_way_score(pr_2_way, max_pr_2_way):
-    return (pr_2_way/max_pr_2_way) * 100.0
-
-def get_peak_2_way_score(pe_2_way, max_pe_2_way):
-    return (pe_2_way/max_pe_2_way) * 100.0
-
-def get_rs_2_way_score(rs_2_way, max_rs_2_way):
-    return (rs_2_way/max_rs_2_way) * 100.0
-
-def get_ps_2_way_score(ps_2_way, max_ps_2_way):
-    return (ps_2_way/max_ps_2_way) * 100.0
-
-def get_2_way_score(pr_2, pr_perc, pe_2, pe_perc, rs_2, rs_perc, ps_2, ps_perc):
-    return (((pr_2 * pr_perc) + (pe_2 * pe_perc)) * 0.7) + (((rs_2 * rs_perc) + (ps_2 * ps_perc)) * 0.3)
+def get_2_way_score(two_way):
+    return two_way
 
 def get_rs_winning_score(rs_winning, max_rs_winning):
     return (rs_winning/max_rs_winning) * 100.0
@@ -129,7 +117,7 @@ def get_sort_df(df):
     sort_df = df.sort_values(by='goat_score', ascending=False)
     sort_df['Rank'] = np.arange(len(sort_df)) + 1
     sort_df['Goat Score'] = round(sort_df['goat_score'],0)
-    final_df = sort_df[['Rank', 'Player', 'Goat Score']].head(20)
+    final_df = sort_df[['Rank', 'Player', 'Goat Score']].head(50)
     return final_df 
 
 def calculate_goat_evualation(raw_df, era, box_score, adv, rs, ps, accolades, prime, peak, prime_perc, peak_perc, leaderboard, two_way, playoff_rise, rs_winning, ps_winning, versatility, cultural, artistry):
@@ -158,11 +146,7 @@ def calculate_goat_evualation(raw_df, era, box_score, adv, rs, ps, accolades, pr
     raw_df['rel_w_total'] = [get_rel_w_total(a,raw_df['w_total'].mean()) for a in raw_df['w_total']]
     raw_df['playoff_rise_score'] = [get_playoff_rise_score(a) for a in raw_df['rel_w_total']]
     raw_df['leaderboard_score'] = [get_leaderboard_score(a,max(raw_df['Leaderboard'])) for a in raw_df['Leaderboard']]
-    raw_df['prime_2_way_score'] = [get_prime_2_way_score(a,max(raw_df['Prime_2_Way'])) for a in raw_df['Prime_2_Way']]
-    raw_df['peak_2_way_score'] = [get_peak_2_way_score(a,max(raw_df['Peak_2_Way'])) for a in raw_df['Peak_2_Way']]
-    raw_df['rs_2_way_score'] = [get_rs_2_way_score(a,max(raw_df['Rs_2_Way'])) for a in raw_df['Rs_2_Way']]
-    raw_df['ps_2_way_score'] = [get_ps_2_way_score(a,max(raw_df['Ps_2_Way'])) for a in raw_df['Ps_2_Way']]
-    raw_df['2_way_score'] = [get_2_way_score(a,prime_perc,b,peak_perc,c,rs,d,ps) for (a,b,c,d) in zip(raw_df['prime_2_way_score'],raw_df['peak_2_way_score'],raw_df['rs_2_way_score'],raw_df['ps_2_way_score'])]
+    raw_df['2_way_score'] = [get_2_way_score(a) for a in raw_df['Two_Way']]
     raw_df['rs_winning_score'] = [get_rs_winning_score(a,max(raw_df['Rs_Winning'])) for a in raw_df['Rs_Winning']]
     raw_df['ps_winning_score'] = [get_ps_winning_score(a,max(raw_df['Ps_Winning'])) for a in raw_df['Ps_Winning']]
     raw_df['ovr_versatility'] = [get_ovr_versatility(a,rs,b,ps,c) for (a,b,c) in zip(raw_df['Rsv'],raw_df['Psv'],raw_df['Dnr'])]
