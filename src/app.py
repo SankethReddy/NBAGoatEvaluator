@@ -78,7 +78,7 @@ app.layout = html.Div([
     html.Div(id='box-score-advanced-analaytics-slider-output-container', style = {'text-align': 'center', 'font-weight': 'bold'}),
     html.Div([
         html.H2("3. Build Your Model", style = {'font-weight': '600', 'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
-        html.P("Distribute EXACTLY 100 points across the following criteria. Once EXACTLY 100 points are distributed, the SUBMIT Button will appear on the bottom and click it to generate your results:", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'})
+        html.P("Distribute EXACTLY 100 points across the following criteria. Once EXACTLY 100 points are distributed, the green SUBMIT Button will appear on the bottom and click it to generate your results:", style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'})
         ]),
     html.Div(id='total-slider-output-container', style = {'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
     html.Div([
@@ -446,7 +446,7 @@ def update_total_distributed_output(accolades,prime,peak,leaderboards,two_way,pl
     elif total_points_distributed == 100:
         return [html.Div([
                     html.H4(f"Total Points Distributed: {total_points_distributed}"),
-                    html.H5("Click the SUBMIT button below to generate results", style={'color': 'green'})
+                    html.H5("Click the green SUBMIT button below to generate results", style={'color': 'green'})
                         ]),
                 {'display': 'block', 'backgroundColor': '#008000', 'color': 'white', 'padding': '10px', 'border': 'none', 'cursor': 'pointer'}]
     else:
