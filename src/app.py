@@ -476,7 +476,7 @@ def update_total_distributed_output(accolades,prime,peak,leaderboards,two_way,pl
      Input('artistry-slider', 'value')]
     )
 def update_table_output(n_clicks,era,box_score_advanced_analytics,regular_season_postseason,accolades,prime,peak,leaderboards,two_way,playoff_rise,regular_season,postseason,versatility,cultural,artistry):
-    df = pd.read_csv("../raw_data/Goat Evaluator Raw Data.csv")
+    df = pd.read_csv("./raw_data/Goat Evaluator Raw Data.csv")
     changed_id_list = [p['prop_id'] for p in dash.callback_context.triggered][0]
     total_points_distributed = accolades + prime + peak + leaderboards + two_way + playoff_rise + regular_season + postseason + versatility + cultural + artistry
     if total_points_distributed != 100:
