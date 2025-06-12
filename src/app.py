@@ -44,37 +44,37 @@ app.layout = html.Div([
         ]),
     html.Div([
         dcc.Slider(id='regular-season-postseason-slider', className='regular-season-postseason-slider-class', min = 0, max = 100, step = 1, value = 50, marks = {
-                                                                                                                                                                 0: {'label': "Regular Season"},
-                                                                                                                                                                 10: {'label': '10'},
-                                                                                                                                                                 20: {'label': '20'},
-                                                                                                                                                                 30: {'label': '30'},
-                                                                                                                                                                 40: {'label': '40'},
-                                                                                                                                                                 50: {'label': '50'},
-                                                                                                                                                                 60: {'label': '60'},
-                                                                                                                                                                 70: {'label': '70'},
-                                                                                                                                                                 80: {'label': '80'},
-                                                                                                                                                                 90: {'label': '90'},
-                                                                                                                                                                 100: {'label': "Postseason"}
+                                                                                                                                                                 0: {'label': "100 / 0"},
+                                                                                                                                                                 10: {'label': '90 / 10'},
+                                                                                                                                                                 20: {'label': '80 / 20'},
+                                                                                                                                                                 30: {'label': '70 / 30'},
+                                                                                                                                                                 40: {'label': '60 / 40'},
+                                                                                                                                                                 50: {'label': '50 / 50'},
+                                                                                                                                                                 60: {'label': '40 / 60'},
+                                                                                                                                                                 70: {'label': '30 / 70'},
+                                                                                                                                                                 80: {'label': '20 / 80'},
+                                                                                                                                                                 90: {'label': '10 / 90'},
+                                                                                                                                                                 100: {'label': "0 / 100"}
                                                                                                                                                                  },
                    tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
         ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
-    html.Div(id='regular-season-postseason-slider-output-container', style = {'text-align': 'center', 'font-weight': 'bold'}),
+    html.Div(id='regular-season-postseason-slider-output-container', style = {'text-align': 'center', 'font-weight': 'bold', 'margin-bottom': '25px'}),
     html.Div([
         dcc.Slider(id='box-score-advanced-analaytics-slider', className='box-season-advanced-statistics-slider-class', min = 0, max = 100, step = 1, value = 50, marks = {
-                                                                                                                                                                         0: {'label': 'Traditional Box Score'},
-                                                                                                                                                                         10: {'label': '10'},
-                                                                                                                                                                         20: {'label': '20'},
-                                                                                                                                                                         30: {'label': '30'},
-                                                                                                                                                                         40: {'label': '40'},
-                                                                                                                                                                         50: {'label': '50'},
-                                                                                                                                                                         60: {'label': '60'},
-                                                                                                                                                                         70: {'label': '70'},
-                                                                                                                                                                         80: {'label': '80'},
-                                                                                                                                                                         90: {'label': '90'},
-                                                                                                                                                                         100: {'label': 'Advanced Statistics'}
+                                                                                                                                                                         0: {'label': '100 / 0'},
+                                                                                                                                                                         10: {'label': '90 / 10'},
+                                                                                                                                                                         20: {'label': '80 / 20'},
+                                                                                                                                                                         30: {'label': '70 / 30'},
+                                                                                                                                                                         40: {'label': '60 / 40'},
+                                                                                                                                                                         50: {'label': '50 / 50'},
+                                                                                                                                                                         60: {'label': '40 / 60'},
+                                                                                                                                                                         70: {'label': '30 / 70'},
+                                                                                                                                                                         80: {'label': '20 / 80'},
+                                                                                                                                                                         90: {'label': '10 / 90'},
+                                                                                                                                                                         100: {'label': '0 / 100'}
                                                                                                                                                                          },
                    tooltip={'always_visible': False, 'placement': 'top', 'style': {'display': 'block', 'fontsize': '100px', 'font-weight': 'bold', 'marginLeft': 'auto', 'marginRight': 'auto'}})
-        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+        ], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center', 'margin-top': '25px'}),
     html.Div(id='box-score-advanced-analaytics-slider-output-container', style = {'text-align': 'center', 'font-weight': 'bold'}),
     html.Div([
         html.H2("3. Build Your Model", style = {'font-weight': '600', 'display': 'block', 'marginLeft': 'auto', 'marginRight': 'auto', 'height': '50%', 'width': '75%'}),
