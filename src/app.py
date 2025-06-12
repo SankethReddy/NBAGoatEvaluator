@@ -12,7 +12,7 @@ import pandas as pd
 from goat_evaluator_calculation import calculate_goat_evualation
 
 server = Flask(__name__)
-app = dash.Dash(__name__, server=server, url_base_pathname='/NBAGoatEvaluator/')
+app = dash.Dash(__name__, server=server)
 
 app.layout = html.Div([
     html.Div([
